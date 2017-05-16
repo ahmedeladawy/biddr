@@ -1,0 +1,11 @@
+<%= form_for [@auction, @bid] do |f| %>
+  <div class="row">
+    <div class="col-md-4 col-md-offset-(-8)">
+      <div class="form-group">
+        <%= f.label :Price %>
+        <%= f.text_area :price, class: 'form-control' %>
+      </div>
+      <%= f.submit 'Bid', class:'btn btn-primary' %>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,59 @@
+<div class="container">
+  <h1><%= @auction.title %></h1>
+  <br>
+  <p><strong>Details </strong> </p>
+  <%= @auction.details %>
+  <br>
+  <h4> Reserve Price: $ <%= @auction.reserve_price %></h4>
+  <h4>Ends_on : <%= @auction.ends_on %></h4>
+
+  <!-- >>>>>>>>> publish >>>>>>>> -->
+  <% if @auction.may_publish? && current_user == @auction.user%>
+    <%= link_to 'Publish' , auction_publishings_path(@auction), method: :post, class: 'btn btn-primary' %>
+  <% end %>
+
+  <!-- >>>>>>>>> Favorit >>>>>>> -->
+  <% if user_signed_in? && can?(:like, @auction) %>
+    <% if @auction.liked_by?(current_user) %>
+        <%= link_to(
+          fa_icon("eye"),
+          auction_like_path(@auction, @auction.like_for(current_user)),
+          method: :delete
+        ) %>
+    <% else %>
+        <%= link_to fa_icon("eye-slash"), auction_likes_path(@auction), method: :post %>
+    <% end %>
+<% end %>
+
+
+<span><%= pluralize(@auction.likes.count, 'Watchers') %></span>
+
+
+  <!-- >>>>>>>>>>>>>Bid Form>>>>>>>>>>>>>>>> -->
+
+    <% if @bid.errors.any? %>
+      <ul>
+        <% @bid.errors.full_messages.each do |msg| %>
+         <li><%= msg %><li>
+        <% end %>
+      </ul>
+    <% end %>
+
+    <p>Current Price:</p>
+
+   <% if current_user != @auction.user %>
+      <%= render 'bid' %>
+    <% end  %>
+
+
+
+
+  <!-- >>>>>>>>> Display Bids >>>>>>>>> -->
+  <h5>Previous Bids</h5>
+  <% @auction.bids.each do |bid| %>
+    <p>$ <%= bid.price %> at <%= bid.created_at %></p>
+    By <%= link_to bid.user.full_name%>
+    <hr>
+  <% end  %>
+
+</div>

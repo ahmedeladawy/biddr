@@ -1,0 +1,10 @@
+<h4>Auction Index</h4>
+
+  <% @auctions.each do |auction|  %>
+    <div>
+      <h2 class='target'><%= link_to auction.title, auction_path(auction) %></h2>
+      By <%= link_to auction.user.full_name%>
+      <hr>
+    </div>
+
+  <% end %>
